@@ -27,7 +27,7 @@ def get_separated_random_arr(min_length: int,
 
 
 def get_random_query(my_len: int) -> Tuple[int, int]:
-    first,second = random.choices(range(my_len), k=2)
+    first, second = random.choices(range(my_len), k=2)
     if first > second:
         first, second = second, first
     return first, second

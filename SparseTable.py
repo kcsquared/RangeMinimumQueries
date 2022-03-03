@@ -17,14 +17,15 @@ class SparseTable:
             self.table[i][0] = arr[i]
 
         for j in range(1, self.K + 1):
-            for i in range(0, self.max_n - (1 << j) + 1):
+            shift = 1<<(j-1)
+            for i in range(0, self.max_n - (1<<j) + 1):
                 self.table[i][j] = self.func(self.table[i][j - 1],
-                                             self.table[i + (1 << (j - 1))][j - 1])
+                                             self.table[i + (1 << shift)][j - 1])
 
     def _log2_floor(self, x: int) -> int:
         return math.floor(math.log2(x))
 
-    def range_func(self, left: int, right: int):
+    def range_func(self, left: int, right: int) -> int:
         j = self._log2_floor(right - left + 1)
         return self.func(self.table[left][j],
                          self.table[right - (1 << j) + 1][j])

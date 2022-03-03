@@ -12,14 +12,14 @@ class AlternateMinMax:
         self.arr = arr[:]
         self.n = len(self.arr)
 
-        self.evens = self.arr[0::2]
-        self.odds = self.arr[1::2]
+        evens = self.arr[0::2]
+        odds = self.arr[1::2]
 
-        self.even_upper_bnds = SparseTable(arr=self.evens, func=min)
-        self.even_lower_bnds = SparseTable(arr=self.evens, func=max)
+        self.even_upper_bounds = SparseTable(arr=evens, func=min)
+        self.even_lower_bounds = SparseTable(arr=evens, func=max)
 
-        self.odd_upper_bnds = SparseTable(arr=self.odds, func=min)
-        self.odd_lower_bnds = SparseTable(arr=self.odds, func=max)
+        self.odd_upper_bounds = SparseTable(arr=odds, func=min)
+        self.odd_lower_bounds = SparseTable(arr=odds, func=max)
 
     def query(self, left: int, right: int) -> int:
         # Inclusive [left, right]
@@ -33,12 +33,12 @@ class AlternateMinMax:
         left_is_even = (left % 2 == 0)
 
         if left_is_even:
-            up_bnds_table = self.even_upper_bnds
-            low_bnds_table = self.odd_lower_bnds
+            up_bounds_table = self.even_upper_bounds
+            low_bounds_table = self.odd_lower_bounds
 
         else:
-            up_bnds_table = self.odd_upper_bnds
-            low_bnds_table = self.even_lower_bnds
+            up_bounds_table = self.odd_upper_bounds
+            low_bounds_table = self.even_lower_bounds
             
         # 1 longer than low_table_len iff R-L+1 = num_elements odd
         up_table_effective_len = (right - left + 2) // 2  
@@ -47,15 +47,16 @@ class AlternateMinMax:
         up_table_start_idx = self._main_idx_to_parity_idx(left)
         low_table_start_idx = self._main_idx_to_parity_idx(left + 1)
 
+
         up_func = self._index_and_table_to_func(start_idx=up_table_start_idx,
                                                 effective_len=up_table_effective_len,
-                                                table_to_use=up_bnds_table)
+                                                table_to_use=up_bounds_table)
 
         low_func = self._index_and_table_to_func(start_idx=low_table_start_idx,
                                                  effective_len=low_table_effective_len,
-                                                 table_to_use=low_bnds_table)
+                                                 table_to_use=low_bounds_table)
 
-        spot = self._binary_search_complex(decreasing_func_calc=up_func,
+        spot = self._binary_search(decreasing_func_calc=up_func,
                                            increasing_func_calc=low_func,
                                            my_len=up_table_effective_len)
 
@@ -91,7 +92,7 @@ class AlternateMinMax:
                                  table_=table_to_use)
                                  
 
-    def _binary_search_complex(self, decreasing_func_calc, increasing_func_calc, my_len: int) -> int:
+    def _binary_search(self, decreasing_func_calc, increasing_func_calc, my_len: int) -> int:
         """Given two my_len-length arrays, first non-increasing, second non-decreasing,
          find smallest index i s.t. decreasing_arr[i] <= increasing_arr[i],
           or my_len if no such i exists"""
@@ -138,4 +139,4 @@ class BruteForceMinMax:
         if left == right:
             return self.arr[left]
 
-        return self.recurse(left, left, right)
+        return self._recurse(left, left, right)
