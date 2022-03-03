@@ -121,7 +121,7 @@ class BruteForceMinMax:
         self.arr = arr[:]
         self.n = len(self.arr)
 
-    def _recurse(self, idx, lower, upper):
+    def _recurse(self, idx: int, lower: int, upper: int) -> int:
         if idx >= upper:
             return self.arr[idx]
         if (idx - lower) % 2 == 0:

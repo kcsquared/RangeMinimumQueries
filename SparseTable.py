@@ -1,12 +1,11 @@
-import functools
 import math
-from typing import List, Tuple
+from typing import Callable, List, Tuple
 
 
 
 class SparseTable:
 
-    def __init__(self, arr: List[int], func):
+    def __init__(self, arr: List[int], func: Callable[[int, int], int]):
         self.max_n = len(arr)
         self.func = func
         self.K = self._log2_floor(self.max_n)

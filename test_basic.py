@@ -3,7 +3,7 @@ import random
 from typing import List, Tuple
 from RangeQueries import AlternateMinMax, BruteForceMinMax
 
-from test_utils import get_random_arr, get_random_query, get_separated_random_arr
+from testing_utils import get_random_arr, get_random_query, get_separated_random_arr
 
 
 
