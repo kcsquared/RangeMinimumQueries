@@ -2,16 +2,14 @@ import random
 from typing import List, Tuple
 
 
-
-def get_random_arr(min_length: int, max_length: int, min_value: int, max_value: int) -> List[
-    int]:
+def get_random_arr(min_length: int, max_length: int, min_value: int,
+                   max_value: int) -> List[int]:
     my_len = random.randrange(min_length, max_length)
     return random.choices(range(min_value, max_value), k=my_len)
 
 
-def get_separated_random_arr(min_length: int,
- max_length: int, min_value: int, max_value: int) -> List[
-    int]:
+def get_separated_random_arr(min_length: int, max_length: int, min_value: int,
+                             max_value: int) -> List[int]:
 
     my_len = random.randrange(min_length, max_length)
     arr = []
