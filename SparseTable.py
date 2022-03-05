@@ -31,7 +31,7 @@ class SparseTable:
         """Helper function for log2. Can be cached for performance optimization."""
         return math.floor(math.log2(x))
 
-    def range_func(self, left: int, right: int) -> int:
+    def range_query(self, left: int, right: int) -> int:
         """Return the result of applying the table's range function to [left, right]"""
         j = self._log2_floor(right - left + 1)
         return self.func(self.table[left][j], self.table[right - (1 << j) + 1][j])
