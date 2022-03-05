@@ -33,8 +33,7 @@ def check_correctness(
 
     for tri in range(num_trials):
         if tri % interval_report == 5:
-            print(
-                f"At trial {tri} after time {perf_counter() - start_time :.4f}")
+            print(f"At trial {tri} after time {perf_counter() - start_time :.4f}")
 
         special_round: bool = random.random() < special_chance
 

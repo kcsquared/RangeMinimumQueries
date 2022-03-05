@@ -4,10 +4,8 @@ from SparseTable import SparseTable
 
 
 class AlternateMinMax:
-
     def __init__(self, arr: List[int]):
         self.arr = arr[:]
-        self.n = len(self.arr)
 
         evens = self.arr[0::2]
         odds = self.arr[1::2]
@@ -39,8 +37,7 @@ class AlternateMinMax:
 
         # 1 longer than low_table_len iff R-L+1 = num_elements odd
         up_table_effective_len = (right - left + 2) // 2
-        low_table_effective_len = up_table_effective_len - (
-            (right - left + 1) % 2)
+        low_table_effective_len = up_table_effective_len - ((right - left + 1) % 2)
 
         up_table_start_idx = self._main_idx_to_parity_idx(left)
         low_table_start_idx = self._main_idx_to_parity_idx(left + 1)
@@ -58,8 +55,8 @@ class AlternateMinMax:
         )
 
         spot = self._binary_search(
-            decreasing_func_calc=up_func,
-            increasing_func_calc=low_func,
+            decreasing_func=up_func,
+            increasing_func=low_func,
             my_len=up_table_effective_len,
         )
 
@@ -81,33 +78,31 @@ class AlternateMinMax:
             else:
                 return high_val
 
-    def _index_and_table_to_func(self, start_idx: int, effective_len: int,
-                                 table_to_use: SparseTable) -> partial[int]:
-
+    def _index_and_table_to_func(
+        self, start_idx: int, effective_len: int, table_to_use: SparseTable
+    ) -> partial[int]:
         def special_func(x: int, start: int, eff_len: int, table_) -> int:
             if x == eff_len:
                 return table_.range_func(left=start, right=start + eff_len - 1)
             else:
                 return table_.range_func(left=start, right=start + x)
 
-        return partial(special_func,
-                       start=start_idx,
-                       eff_len=effective_len,
-                       table_=table_to_use)
+        return partial(
+            special_func, start=start_idx, eff_len=effective_len, table_=table_to_use
+        )
 
-    def _binary_search(self, decreasing_func_calc, increasing_func_calc,
-                       my_len: int) -> int:
+    def _binary_search(self, decreasing_func, increasing_func, my_len: int) -> int:
         """Given two my_len-length arrays, first non-increasing, second non-decreasing,
         find smallest index i s.t. decreasing_arr[i] <= increasing_arr[i],
          or my_len if no such i exists"""
 
-        if decreasing_func_calc(my_len - 1) > increasing_func_calc(my_len - 1):
+        if decreasing_func(my_len - 1) > increasing_func(my_len - 1):
             return my_len
 
         low, high = 0, my_len - 1
         while low < high:
             mid = (low + high) // 2
-            if decreasing_func_calc(mid) <= increasing_func_calc(mid):
+            if decreasing_func(mid) <= increasing_func(mid):
                 high = mid
             else:
                 low = mid + 1
@@ -121,7 +116,6 @@ class AlternateMinMax:
 
 
 class BruteForceMinMax:
-
     def __init__(self, arr: List[int]):
         self.arr = arr[:]
         self.n = len(self.arr)
