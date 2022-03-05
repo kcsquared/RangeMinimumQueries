@@ -1,6 +1,7 @@
 from time import perf_counter
 import random
 from typing import List
+from wsgiref.simple_server import sys_version
 from RangeQueries import AlternateMinMax, BruteForceMinMax
 
 from testing_utils import get_random_arr, get_random_query, get_separated_random_arr

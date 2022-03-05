@@ -11,8 +11,10 @@ class SparseTable:
     def __init__(self, arr: List[int], func: Callable[[int, int], int]) -> None:
         self.max_n = len(arr)
         self.func = func
-        self.num_bits = self._log2_floor(self.max_n)
-        self.table = [[0 for _ in range(self.num_bits + 1)] for _ in range(self.max_n)]
+        self.num_bits_n = self._log2_floor(self.max_n)
+        self.table = [
+            [0 for _ in range(self.num_bits_n + 1)] for _ in range(self.max_n)
+        ]
         self._fill_table(arr)
 
     def _fill_table(self, arr: List[int]) -> None:
@@ -20,11 +22,11 @@ class SparseTable:
         for i in range(self.max_n):
             self.table[i][0] = arr[i]
 
-        for j in range(1, self.num_bits + 1):
+        for j in range(1, self.num_bits_n + 1):
             shift = 1 << (j - 1)
             for i in range(0, self.max_n - (1 << j) + 1):
                 self.table[i][j] = self.func(
-                    self.table[i][j - 1], self.table[i + (1 << shift)][j - 1]
+                    self.table[i][j - 1], self.table[i + shift][j - 1]
                 )
 
     def _log2_floor(self, x: int) -> int:
